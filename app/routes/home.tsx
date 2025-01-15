@@ -1,17 +1,17 @@
-import type { Route } from "./+types/home";
-import { Welcome } from "../welcome/welcome";
+import Board from "./board";
 
-export function meta({}: Route.MetaArgs) {
-  return [
-    { title: "New React Router App" },
-    { name: "description", content: "Welcome to React Router!" },
-  ];
-}
-
-export function loader({ context }: Route.LoaderArgs) {
-  return { message: context.VALUE_FROM_VERCEL };
-}
-
-export default function Home({ loaderData }: Route.ComponentProps) {
-  return <Welcome message={loaderData.message} />;
+export default function Home() {
+  return (
+    <div className="flex flex-col items-center min-h-screen bg-gray-100 p-4">
+      <header className="w-full max-w-4xl text-center mb-6">
+        <h1 className="text-3xl font-bold text-blue-700">
+          <span className="text-gray-800">Damas</span>
+          <span>.js</span>
+        </h1>
+      </header>
+      <main className="w-full max-w-4xl">
+        <Board />
+      </main>
+    </div>
+  );
 }
