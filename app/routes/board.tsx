@@ -1,7 +1,8 @@
 import { useState } from "react";
 import Pieces from "./pieces";
-import type { Grid, HighlightedMove } from "~/utils/types";
+import type { Board, Grid, HighlightedMove } from "~/utils/types";
 import { getHighlightedMoves, initializeBoard } from "~/utils/boardUtils";
+import { selectPiece } from "~/utils/rules";
 
 export default function Board() {
   // Guarda a matrix e usa o initializeBoard pra fazer um tabuleiro 8x8
@@ -13,28 +14,26 @@ export default function Board() {
   const [selectedPiece, setSelectedPiece] = useState<{ row: number; col: number } | null>(null);
 
   const onPieceClick = (row: number, col: number) => {
-    // Obtém os movimentos válidos da peça na posição clicada
-    const moves = getHighlightedMoves(grid, row, col);
-
-    // Atualiza o estado dos movimentos destacados
-    setHighlightedMoves(moves);
-
     // Obtém a peça na posição clicada
     const piece = grid[row]?.[col];
+    const board: Board = {
+      grid,
+      size: grid.length,
+      currentTurn: "white",
+      selectedPiece: null,
+    };
 
     if (piece) {
-      // Se o quadrado clicado tem uma peça
-      console.log(`Você clicou em uma peça na posição: (${row}, ${col})`);
-
+      console.log("Arquivo board.tsx ~ Peça selecionada no estado:", board.selectedPiece);
+      console.log(`Arquivo board.tsx ~ Você clicou em uma peça na posição: (${row}, ${col})`);
+      // Seleciona a peça e calcula os movimentos válidos
+      selectPiece(board, row, col);
       // Define a peça clicada como a peça selecionada no estado
       setSelectedPiece({ row, col });
-
       // Atualiza os movimentos válidos para a peça selecionada
-      const moves = getHighlightedMoves(grid, row, col);
-      setHighlightedMoves(moves);
+      setHighlightedMoves(board.selectedPiece?.highlightedMoves || []);
     } else {
-      // Se o quadrado clicado não tem uma peça
-      console.log(`Você clicou em uma célula vazia na posição: (${row}, ${col})`);
+      console.log(`Arquivo board.tsx ~ Você clicou em uma célula vazia na posição: (${row}, ${col})`);
       setSelectedPiece(null);
       setHighlightedMoves([]);
     }

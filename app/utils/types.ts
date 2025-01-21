@@ -23,3 +23,9 @@ export interface PiecesProps {
   onPieceClick: (row: number, col: number) => void;
   selectedPiece?: { row: number; col: number } | null;
 }
+
+export interface Move {
+  row: number;
+  col: number;
+  capture?: Piece;
+}

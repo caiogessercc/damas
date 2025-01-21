@@ -27,7 +27,7 @@ export const initializeBoard = (): Grid => {
           };
         }
       }
-      // Retorna null para os quadrados que não possuem peças
+
       return null;
     })
   );
