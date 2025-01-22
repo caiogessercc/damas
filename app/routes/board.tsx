@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Pieces from "./pieces";
 import type { Board, Grid, HighlightedMove } from "~/utils/types";
-import { getHighlightedMoves, initializeBoard } from "~/utils/boardUtils";
+import { initializeBoard } from "~/utils/boardUtils";
 import { movePiece, selectPiece } from "~/utils/rules";
 
 export default function Board() {
@@ -31,11 +31,11 @@ export default function Board() {
     if (selectedPiece) {
       // Obtém a peça selecionada no grid
       const isSelected = grid[selectedPiece.row]?.[selectedPiece.col];
-      // Verifica se a peça selecionada
+      // Confirma que a peça selecionada existe
       if (isSelected) {
-        // Verifica se o movimento foi
+        // Tenta realizar o movimento
         const moved = movePiece(board, isSelected, row, col);
-        // Verifica se o movimento deu certo
+        // Se o movimento for válido
         if (moved) {
           setGrid([...board.grid]); // Atualiza o estado do tabuleiro
           setSelectedPiece(null); // Limpa a seleção da peça
@@ -44,7 +44,6 @@ export default function Board() {
           return;
         }
       }
-
     }
 
     if (piece && piece.color === currentTurn) {

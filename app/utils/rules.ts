@@ -151,7 +151,7 @@ export function movePiece(
   piece.col = col;
 
   if (!piece.isQueen && (row === 0 || row === board.size - 1)) {
-    return piece.isQueen = true;
+    piece.isQueen = true;
   }
 
   board.currentTurn = board.currentTurn === "white" ? "black" : "white";
