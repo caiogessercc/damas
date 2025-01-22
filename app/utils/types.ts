@@ -1,6 +1,6 @@
 export type Grid = (Piece | null)[][];
 
-export interface HighlightedMove { row: number; col: number; }
+export interface HighlightedMove { row: number; col: number; capture?: Piece; }
 
 export interface Board {
   size: number;
@@ -22,10 +22,4 @@ export interface PiecesProps {
   highlightedMoves: HighlightedMove[];
   onPieceClick: (row: number, col: number) => void;
   selectedPiece?: { row: number; col: number } | null;
-}
-
-export interface Move {
-  row: number;
-  col: number;
-  capture?: Piece;
 }

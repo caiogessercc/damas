@@ -1,9 +1,12 @@
-import type { Board, Move, Piece } from "./types";
+import type { Board, HighlightedMove, Piece } from "./types";
 
 // Função para selecionar uma peça no tabuleiro
 export function selectPiece(board: Board, row: number, col: number): void {
   console.log("Arquivo rules.ts ~ Peça selecionada:", board.selectedPiece);
-  console.log("Arquivo rules.ts ~ Movimentos destacados:", board.selectedPiece?.highlightedMoves);
+  console.log(
+    "Arquivo rules.ts ~ Movimentos destacados:",
+    board.selectedPiece?.highlightedMoves
+  );
   const piece = getPiece(board, row, col);
 
   if (piece && piece.color === board.currentTurn) {
@@ -19,14 +22,17 @@ export function selectPiece(board: Board, row: number, col: number): void {
   } else {
     // Remove a seleção caso a célula não contenha uma peça válida
     board.selectedPiece = null;
-    console.log("Arquivo rules.ts ~ Nenhuma peça válida na posição:", { row, col });
+    console.log("Arquivo rules.ts ~ Nenhuma peça válida na posição:", {
+      row,
+      col,
+    });
   }
 }
 
 // Função para calcular os movimentos válidos para uma peça
-export function highlightMoves(piece: Piece, board: Board): Move[] {
+export function highlightMoves(piece: Piece, board: Board): HighlightedMove[] {
   console.log("Arquivo rules.ts ~ Calculando movimentos para a peça:", piece);
-  const highlightedMoves: Move[] = [];
+  const highlightedMoves: HighlightedMove[] = [];
   console.log("Arquivo rules.ts ~ Movimentos calculados:", highlightedMoves);
 
   const directions = piece.isQueen
@@ -120,11 +126,49 @@ export function highlightMoves(piece: Piece, board: Board): Move[] {
   return highlightedMoves;
 }
 
+export function movePiece(
+  board: Board,
+  piece: Piece,
+  row: number,
+  col: number
+): boolean {
+  const validMove = piece.highlightedMoves.find(
+    (move) => move.row === row && move.col === col
+    );
+
+  if (!validMove) return false;
+
+  // Remove a peça capturada, se houver
+  if (validMove.capture) {
+    removePiece(board, validMove.capture.row, validMove.capture.col);
+  }
+
+  // Atualiza o grid com a nova posição
+  board.grid[piece.row][piece.col] = null; // Remove da posição atual
+  board.grid[row][col] = piece; // Move para a nova posição
+  // Atualiza os dados da peça
+  piece.row = row;
+  piece.col = col;
+
+  if (!piece.isQueen && (row === 0 || row === board.size - 1)) {
+    return piece.isQueen = true;
+  }
+
+  board.currentTurn = board.currentTurn === "white" ? "black" : "white";
+  board.selectedPiece = null;
+
+  return true;
+}
+
 // Função pra obter uma peça de uma posição no tabuleiro
 function getPiece(board: Board, row: number, col: number): Piece | null {
   const piece = board.grid[row]?.[col];
   console.log(`Arquivo rules.ts ~ Peça na posição (${row}, ${col}):`, piece);
   return board.grid[row]?.[col] || null;
+}
+
+function removePiece(board: Board, row: number, col: number): void {
+  board.grid[row][col] = null;
 }
 
 // Função pra verificar se a posição está dentro dos limites do tabuleiro
