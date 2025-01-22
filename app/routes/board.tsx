@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Pieces from "./pieces";
-import type { Board, Grid, HighlightedMove } from "~/utils/types";
+import type { Board, HighlightedMove } from "~/utils/types";
 import { initializeBoard } from "~/utils/boardUtils";
 import { movePiece, selectPiece } from "~/utils/rules";
 

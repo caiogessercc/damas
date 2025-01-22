@@ -83,7 +83,6 @@ export function highlightMoves(piece: Piece, board: Board): HighlightedMove[] {
               capture: targetCell,
             });
           }
-          break; // Para ao encontrar uma peça
         } else {
           break; // Para se encontrar uma peça do time
         }
@@ -100,11 +99,12 @@ export function highlightMoves(piece: Piece, board: Board): HighlightedMove[] {
 
       const targetCell = getPiece(board, targetRow, targetCol);
 
+      // Se o quadrado estiver vaxio, adiciona como movimento válido
       if (!targetCell) {
-        // Se o quadrado estiver vaxio, adiciona como movimento válido
         highlightedMoves.push({ row: targetRow, col: targetCol });
-      } else if (targetCell.color !== piece.color) {
+
         // Se for uma peça inimiga, verifica se pode capturar
+      } else if (targetCell.color !== piece.color) {
         const jumpRow = targetRow + rowDir;
         const jumpCol = targetCol + colDir;
 
