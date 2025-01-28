@@ -1,3 +1,4 @@
+import { cn } from "~/utils/cn";
 import type { PiecesProps } from "~/utils/types";
 
 export default function Pieces({ grid, highlightedMoves, onPieceClick, selectedPiece }: PiecesProps) {
@@ -21,22 +22,30 @@ export default function Pieces({ grid, highlightedMoves, onPieceClick, selectedP
           return (
             <div
               key={`${rowIndex}-${colIndex}`}
-              className={`relative flex items-center justify-center ${isBlackSquare ? "bg-gray-800" : "bg-gray-200"
-                } ${isHighlighted ? "bg-blue-500 border-4 border-yellow-500" : ""} aspect-square`}
+              className={cn(
+                "relative flex items-center justify-center aspect-square",
+                isBlackSquare ? "bg-gray-800" : "bg-gray-200",
+                isHighlighted && "border-4 border-yellow-500"
+              )}
+
               onClick={() => onPieceClick(rowIndex, colIndex)}
             >
               {/* Se a peça existir no quadrado */}
               {piece && (
                 <div
-                  className={`w-3/4 h-3/4 rounded-full ${piece.color === "white" ? "bg-white" : "bg-black"
-                    } ${isSelected ? "ring-4 ring-yellow-500" : ""
-                    }`}
+                  className={cn(
+                    "w-3/4 h-3/4 rounded-full",
+                    piece.color === "white" ? "bg-white" : "bg-black",
+                    isSelected && "ring-4 ring-yellow-500"
+                  )}
                 >
                   {/* Coloca o ícone de coroa para peças que são damas */}
                   {piece.isQueen && (
                     <span
-                      className={`absolute inset-0 flex items-center justify-center text-lg ${piece.color === "white" ? "text-gray-800" : "text-gray-200"
-                        }`}
+                      className={cn(
+                        "absolute inset-0 flex items-center justify-center text-lg",
+                        piece.color === "white" ? "text-gray-800" : "text-gray-200"
+                      )}
                     >
                       👑
                     </span>

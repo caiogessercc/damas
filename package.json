@@ -10,12 +10,14 @@
   "dependencies": {
     "@react-router/express": "^7.1.1",
     "@react-router/node": "^7.1.1",
-    "@vercel/node": "^3.2.25",
+    "@vercel/node": "^3.0.1",
+    "clsx": "^2.1.1",
     "express": "^4.21.1",
     "isbot": "^5.1.17",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-router": "^7.1.1"
+    "react-router": "^7.1.1",
+    "tailwind-merge": "^2.6.0"
   },
   "devDependencies": {
     "@react-router/dev": "^7.1.1",
@@ -28,7 +30,7 @@
     "postcss": "^8.4.49",
     "tailwindcss": "^3.4.16",
     "typescript": "^5.7.2",
-    "vite": "^5.4.11",
+    "vite": "^5.4.14",
     "vite-tsconfig-paths": "^5.1.4"
   }
 }

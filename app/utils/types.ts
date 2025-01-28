@@ -1,18 +1,21 @@
 export type Grid = (Piece | null)[][];
 
+// enum Color = { white = "white", black = "black"}
+type ColorType = "white" |"black"
+
 export interface HighlightedMove { row: number; col: number; capture?: Piece; }
 
 export interface Board {
   size: number;
   grid: Grid;
-  currentTurn: "white" | "black";
+  currentTurn: ColorType;
   selectedPiece: Piece | null;
 }
 
 export interface Piece {
   row: number;
   col: number;
-  color: "white" | "black";
+  color: ColorType;
   isQueen: boolean;
   highlightedMoves: HighlightedMove[];
 }

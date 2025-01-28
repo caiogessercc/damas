@@ -15,7 +15,7 @@ export const initializeBoard = (): Grid => {
             isQueen: false,
             highlightedMoves: [],
           };
-        } 
+        }
         // Adiciona peças brancas nas 3 últimas linhas
         else if (row > 4) {
           return {
