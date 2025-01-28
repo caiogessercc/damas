@@ -1,8 +1,51 @@
 import { useState } from "react";
 import Pieces from "./pieces";
-import type { Board, HighlightedMove } from "~/utils/types";
-import { initializeBoard } from "~/utils/boardUtils";
+import type { Board, Grid, HighlightedMove } from "~/utils/types";
 import { movePiece, selectPiece } from "~/utils/rules";
+import Square from "./Square";
+
+const initializeBoard = (): Grid => {
+  const size = 8;
+  return Array.from({ length: size }, (_, row) => // Cria um array de 8 linhas
+    Array.from({ length: size }, (_, col) => { // Para cada linha, cria 8 colunas
+      // Determina se o quadrado é preto com base na posição da linha e coluna
+      if ((row + col) % 2 !== 0) {
+        // Adiciona peças pretas nas 3 primeiras linhas
+        if (row < 3) {
+          return {
+            row,
+            col,
+            color: "black",
+            isQueen: false,
+            highlightedMoves: [],
+          };
+        }
+        // Adiciona peças brancas nas 3 últimas linhas
+        else if (row > 4) {
+          return {
+            row,
+            col,
+            color: "white",
+            isQueen: false,
+            highlightedMoves: [],
+          };
+        }
+      }
+
+      return null;
+    })
+  );
+};
+
+// Função para obter os movimentos destacados de uma peça
+const getHighlightedMoves = (grid: Grid, row: number, col: number): HighlightedMove[] => {
+  // Obtém a peça na posição especificada no tabuleiro (se existir)
+  const piece = grid[row]?.[col];
+
+  // Se a peça existir, retorna os movimentos destacados, caso contrário, retorna um array vazio
+  return piece?.highlightedMoves || [];
+};
+
 
 export default function Board() {
   // Guarda a matrix e usa o initializeBoard pra fazer um tabuleiro 8x8
@@ -87,23 +130,28 @@ export default function Board() {
   };
 
   return (
-    <section id="game-board" className="w-full max-w-4xl mx-auto text-center">
-      <div className="mb-4 text-gray-800">
+    <section className="w-full max-w-4xl mx-auto text-center">
+      <div className="mb-4 text-black">
         <p>Turno atual: {currentTurn === "white" ? "Brancas" : "Pretas"}</p>
         <p>Peças Brancas: {pieceCounts.white} | Peças Pretas: {pieceCounts.black}</p>
       </div>
-      <div className="grid grid-cols-8 w-full max-w-2xl mx-auto aspect-square border-2 border-gray-800 rounded-lg overflow-hidden bg-gray-200">
-        <Pieces
-          grid={grid}
-          highlightedMoves={highlightedMoves}
-          onPieceClick={onPieceClick}
-          selectedPiece={selectedPiece}
-        />
+      <div className="grid grid-cols-8 gap-0 w-full max-w-2xl mx-auto">
+        {grid.map((row, rowIndex) =>
+          row.map((piece, colIndex) => (
+            <Square
+              key={`${rowIndex}-${colIndex}`}
+              isBlack={(rowIndex + colIndex) % 2 === 1}
+              isHighlighted={highlightedMoves.some(
+                (move) => move.row === rowIndex && move.col === colIndex
+              )}
+              onClick={() => onPieceClick(rowIndex, colIndex)}
+            >
+              {piece && <Pieces {...piece} isSelected={selectedPiece?.row === rowIndex && selectedPiece?.col === colIndex} />}
+            </Square>
+          ))
+        )}
       </div>
-      <button
-        onClick={resetGame}
-        className="mt-4 bg-blue-600 text-white px-4 py-2 rounded"
-      >
+      <button onClick={resetGame} className="mt-4 bg-blue-600 text-white px-4 py-2 rounded">
         Reiniciar Jogo
       </button>
     </section>
